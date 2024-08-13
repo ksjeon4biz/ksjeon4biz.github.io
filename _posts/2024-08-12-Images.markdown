@@ -14,3 +14,4 @@ categories: architecture
 ![img](/assets/img/2024-08-11-MSA/Cloud_MSA_6.png)
 ![img](/assets/img/2024-08-11-MSA/Cloud_MSA_7.png)
 ![img](/assets/img/2024-08-11-MSA/Cloud_MSA_8.png)
+![img](/assets/img/2024-08-11-MSA/pic1.png)
