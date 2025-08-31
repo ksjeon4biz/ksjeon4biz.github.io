@@ -6,9 +6,9 @@ categories: Architecture
 ---
 
 
-[화해] : https://blog.hwahae.co.kr/all/tech/14541
+[화해] : (https://blog.hwahae.co.kr/all/tech/14541)
 
-[LINE] : https://engineering.linecorp.com/ko/blog/circuit-breakers-for-distributed-services
+[LINE] : (https://engineering.linecorp.com/ko/blog/circuit-breakers-for-distributed-services)
 
-[블로그]] : https://qwer9412.tistory.com/2
+[블로그] : (https://qwer9412.tistory.com/2)
 
