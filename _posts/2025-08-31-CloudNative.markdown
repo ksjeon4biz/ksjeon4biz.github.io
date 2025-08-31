@@ -5,49 +5,51 @@ date:   2025-08-31 17:57:00 +0900
 categories: Cloud
 ---
 
-“Cloud-Native”를 buzzword가 아니라 실무 설계·운영 방법론으로 풀어볼게요. (정의 → 핵심 원칙 → 아키텍처 구성 → 필수 패턴 → 데이터/보안 → 안티패턴 → 도입 로드맵 → 간단 예시 → FlutterFlow/Supabase 맥락)
+“Cloud-Native”를 buzzword가 아니라 __실무 설계·운영 방법론__ 으로 풀어볼게요.  
+(정의 → 핵심 원칙 → 아키텍처 구성 → 필수 패턴 → 데이터/보안 → 안티패턴 → 도입 로드맵 → 간단 예시 → FlutterFlow/Supabase 맥락)
 
 ## 1) 한 줄 정의
 
-Cloud-Native는 컨테이너·마이크로서비스·불변 인프라·선언적 API를 바탕으로, 자동화(CI/CD)와 관측성을 통해 탄력적으로 확장/복구되는 시스템을 설계·구축·운영하는 방식입니다. 목표는 빠른 배포, 고가용성/복원력, 운영 자동화예요.
+Cloud-Native는 컨테이너·마이크로서비스·불변 인프라·선언적 API를 바탕으로, __자동화(CI/CD)와 관측성__ 을 통해 탄력적으로 확장/복구되는 시스템을 설계·구축·운영하는 방식입니다.  
+목표는 __빠른 배포, 고가용성/복원력, 운영 자동화__ 예요.
 
 ## 2) 핵심 원칙(요약)
 
-* 컨테이너화: 실행 환경을 이미지로 표준화(이식성↑)
+* __컨테이너화__: 실행 환경을 이미지로 표준화(이식성↑)
 
-* 마이크로서비스: 단일 책임, 독립 배포(결합↓, 응집↑)
+* __마이크로서비스__: 단일 책임, 독립 배포(결합↓, 응집↑)
 
-* 선언적 구성: IaC(Git), 쿠버네티스 리소스(YAML), GitOps
+* __선언적 구성__: IaC(Git), 쿠버네티스 리소스(YAML), GitOps
 
-* 불변(Immutable) 인프라: SSH로 고치는 대신 새 버전 재배포
+* __불변(Immutable) 인프라__: SSH로 고치는 대신 새 버전 재배포
 
-* 자동화된 전달 파이프라인: CI/CD, Canary/Blue-Green, Feature Flag
+* __자동화된 전달 파이프라인__: CI/CD, Canary/Blue-Green, Feature Flag
 
-* 관측성(Observability): 로그·메트릭·트레이싱(분산 추적)
+* __관측성(Observability)__: 로그·메트릭·트레이싱(분산 추적)
 
-* 자가치유/탄력성: 오토스케일, 재시도/서킷브레이커, 헬스체크
+* __자가치유/탄력성__: 오토스케일, 재시도/서킷브레이커, 헬스체크
 
-* 보안 내재화(DevSecOps): SBOM/서명, mTLS, 비밀관리, 정책코드(OPA)
+* __보안 내재화(DevSecOps)__: SBOM/서명, mTLS, 비밀관리, 정책코드(OPA)
 
-* SRE 지표 기반 운영: SLI/SLO, 에러버짓, 무중단/점진 배포
+* __SRE 지표 기반 운영__: SLI/SLO, 에러버짓, 무중단/점진 배포
 
-* 비용 가시화(FinOps): 요청/Pod/스토리지 단위로 비용 추적·최적화
+* __비용 가시화(FinOps)__: 요청/Pod/스토리지 단위로 비용 추적·최적화
 
 ## 3) 아키텍처 레이어
 
-* 앱 레이어: 도메인 서비스(REST/gRPC/Event), 이벤트 핸들러
+* __앱 레이어__: 도메인 서비스(REST/gRPC/Event), 이벤트 핸들러
 
-* 플랫폼: Kubernetes(스케줄러/서비스/Ingress/Job/CronJob)
+* __플랫폼__: Kubernetes(스케줄러/서비스/Ingress/Job/CronJob)
 
-* Runtime: 컨테이너 런타임, 이미지 레지스트리
+* __Runtime__: 컨테이너 런타임, 이미지 레지스트리
 
-* 전달 파이프라인: CI(Coverage/보안스캔) → CD(GitOps/ArgoCD)
+* __전달 파이프라인__: CI(Coverage/보안스캔) → CD(GitOps/ArgoCD)
 
-* 네트워킹: Ingress/Service Mesh(Istio/Linkerd), mTLS, 트래픽 분할
+* __네트워킹__: Ingress/Service Mesh(Istio/Linkerd), mTLS, 트래픽 분할
 
-* 관측성: Prometheus, Loki/ELK, OpenTelemetry, Grafana
+* __관측성__: Prometheus, Loki/ELK, OpenTelemetry, Grafana
 
-* 데이터: StatefulSet+PV/PVC, 오퍼레이터(DB 운영 자동화), 백업/DR
+* __데이터__: StatefulSet+PV/PVC, 오퍼레이터(DB 운영 자동화), 백업/DR
 
 ## 4) 필수 설계 패턴
 
@@ -65,25 +67,25 @@ Cloud-Native는 컨테이너·마이크로서비스·불변 인프라·선언적
 
 ## 5) 상태(State)와 데이터
 
-* Stateless 앱: 세션·진행상태는 토큰/스토리지/백엔드에 둠 → 수평 확장 쉬움
+* __Stateless 앱__: 세션·진행상태는 토큰/스토리지/백엔드에 둠 → 수평 확장 쉬움
 
-* Stateful 워크로드: DB/큐/검색은 오퍼레이터(예: Postgres/MySQL Operator)로 배포·백업·업그레이드 자동화
+* __Stateful 워크로드__: DB/큐/검색은 오퍼레이터(예: Postgres/MySQL Operator)로 배포·백업·업그레이드 자동화
 
-* DR 설계: RPO/RTO 목표, 증분 백업, 스냅샷, 멀티-AZ/리전, Read Replica
+* __DR 설계__: RPO/RTO 목표, 증분 백업, 스냅샷, 멀티-AZ/리전, Read Replica
 
-* 일관성 모델: 최종 일관성 + UX 보정(“처리중”/메모리밸런스)
+* __일관성 모델__: 최종 일관성 + UX 보정(“처리중”/메모리밸런스)
 
 ## 6) 보안(Shift-Left)
 
-* 이미지 보안: SBOM, 취약점 스캔, 이미지 서명(SLSA/키 체인)
+* __이미지 보안__: SBOM, 취약점 스캔, 이미지 서명(SLSA/키 체인)
 
-* 비밀 관리: KMS/Sealed-Secrets/External Secrets
+* __비밀 관리__: KMS/Sealed-Secrets/External Secrets
 
-* 네트워크: mTLS(Service Mesh), 네임스페이스·네트워크폴리시
+* __네트워크__: mTLS(Service Mesh), 네임스페이스·네트워크폴리시
 
-* 정책 코드: OPA/Gatekeeper/Kyverno로 배포 정책 강제
+* __정책 코드__: OPA/Gatekeeper/Kyverno로 배포 정책 강제
 
-* 런타임: 최소 권한, Seccomp/AppArmor, Falco 등 런타임 감시
+* __런타임__: 최소 권한, Seccomp/AppArmor, Falco 등 런타임 감시
 
 ## 7) 안티패턴(피해야 할 것)
 
@@ -99,23 +101,23 @@ Cloud-Native는 컨테이너·마이크로서비스·불변 인프라·선언적
 
 ## 8) 도입 로드맵(현실적인 순서)
 
-1. 컨테이너화: 빌드 표준화, 설정 외부화(12-Factor)
+1. __컨테이너화__: 빌드 표준화, 설정 외부화(12-Factor)
 
-1. CI: 테스트/보안스캔/커버리지, 이미지 레지스트리
+1. __CI__: 테스트/보안스캔/커버리지, 이미지 레지스트리
 
-1. 쿠버네티스 배포: Deployment/Service/Ingress, 헬스체크
+1. __쿠버네티스 배포__: Deployment/Service/Ingress, 헬스체크
 
-1. 관측성 기본: 메트릭·로그·트레이스 + 대시보드/알람
+1. __관측성 기본__: 메트릭·로그·트레이스 + 대시보드/알람
 
-1. CD/GitOps: PR→자동 배포, 롤백 원클릭, Canary 도입
+1. __CD/GitOps__: PR→자동 배포, 롤백 원클릭, Canary 도입
 
-1. 데이터 운영성: 오퍼레이터/백업/DR, 성능·쿼터 관리
+1. __데이터 운영성__: 오퍼레이터/백업/DR, 성능·쿼터 관리
 
-1. 서비스 메쉬(필요할 때): mTLS, 트래픽 분할, 정책 일원화
+1. __서비스 메쉬(필요할 때)__: mTLS, 트래픽 분할, 정책 일원화
 
-1. SRE 운영: SLI/SLO/에러버짓, 혼돈테스트(Chaos)로 복원력 검증
+1. __SRE 운영__: SLI/SLO/에러버짓, 혼돈테스트(Chaos)로 복원력 검증
 
-1. FinOps: 오토스케일 튜닝(HPA/KEDA), 리소스/비용 대시보드
+1. __FinOps__: 오토스케일 튜닝(HPA/KEDA), 리소스/비용 대시보드
 
 ## 9) 최소 예시 (Kubernetes 배포 + 오토스케일)
 ```yaml
@@ -160,15 +162,15 @@ spec:
 
 ## 10) FlutterFlow + Supabase에 대입
 
-* 앱: 완전 Stateless 화면/액션, Edge Functions로 도메인 로직 분리
+* __앱__: 완전 Stateless 화면/액션, Edge Functions로 도메인 로직 분리
 
-* 데이터: RLS로 보안, RPC(원자 동작)로 트랜잭션 캡슐화
+* __데이터__: RLS로 보안, RPC(원자 동작)로 트랜잭션 캡슐화
 
-* 전달: Functions를 GitHub Actions로 빌드/배포(버전 태깅), Canary 키(Feature Flag)로 점진 롤아웃
+* __전달__: Functions를 GitHub Actions로 빌드/배포(버전 태깅), Canary 키(Feature Flag)로 점진 롤아웃
 
-* 관측성: Edge Logs + DB 모니터링(쿼리 시간/잠금), 에러추적(Sentry)
+* __관측성__: Edge Logs + DB 모니터링(쿼리 시간/잠금), 에러추적(Sentry)
 
-* 캐시/확장: Redis 등으로 읽기 가속, KEDA로 큐 길이에 따른 스케일
+* __캐시/확장__: Redis 등으로 읽기 가속, KEDA로 큐 길이에 따른 스케일
 
 ## 마무리
 
@@ -343,20 +345,20 @@ spec: { minAvailable: 1, selector: { matchLabels: { app: products } } }
 
 “빠르게 자주 바꾸고, 트래픽이 요동치며, 글로벌로 확장해야 하는” 모델일수록 이득이 큽니다.
 
-* SaaS(멀티테넌트): 고객별 테넌트 격리·자동 확장·버전 롤아웃/롤백이 잦음
+* __SaaS(멀티테넌트)__: 고객별 테넌트 격리·자동 확장·버전 롤아웃/롤백이 잦음
     - (예: B2B 업무툴, 분석 플랫폼)
 
-* 이커머스/마켓플레이스: 시즌/프로모션 스파이크, 지역 확장, 기능 실험(Canary/Feature Flag) 빈번
+* __이커머스/마켓플레이스__: 시즌/프로모션 스파이크, 지역 확장, 기능 실험(Canary/Feature Flag) 빈번
 
-* 핀테크/결제/구독: 규제 준수 + 고가용성 + 이벤트 기반 처리(비동기) 필요
+* __핀테크/결제/구독__: 규제 준수 + 고가용성 + 이벤트 기반 처리(비동기) 필요
 
-* 미디어/게임/라이브 서비스: 순간 동시접속·저지연·글로벌 엣지 서빙
+* __미디어/게임/라이브 서비스__: 순간 동시접속·저지연·글로벌 엣지 서빙
 
-* IoT/스트리밍/실시간 데이터: 이벤트 드리븐·수평 확장 친화
+* __IoT/스트리밍/실시간 데이터__: 이벤트 드리븐·수평 확장 친화
 
-* 온디맨드/물류(배달·모빌리티): 수요 변동 큼, 지역/노선/재고 연산 분산 필요
+* __온디맨드/물류(배달·모빌리티)__: 수요 변동 큼, 지역/노선/재고 연산 분산 필요
 
-* API 비즈니스/플랫폼: 외부 개발자 대상, 버저닝·SLO 관리·관측성이 핵심
+* __API 비즈니스/플랫폼__: 외부 개발자 대상, 버저닝·SLO 관리·관측성이 핵심
 
 반대로 변경이 드물고 트래픽이 작은 단일 업무 시스템, 또는 **강한 데이터 종속(대형 모놀리식 DB, 메인프레임)**만 있는 곳은 초기 ROI가 낮을 수 있어요(점진 도입 권장).
 
@@ -452,18 +454,79 @@ spec: { minAvailable: 1, selector: { matchLabels: { app: products } } }
 을 한 번에 드립니다.
 
 ## 1) Cloud-Native 도입 적합성 진단표 (0~5점, 총 50점)
-|	항목	|	의미(고득점일수록 도입가치↑)	|	베이스라인 점수	|	근거/메모	|
-|	---	|	---	|	---	|	---	|
-|	기능 출시 속도	|	배포 빈도·실험 필요성	|	4	|	쇼핑앱은 프로모션/번역/카탈로그 변경이 잦음	|
-|	트래픽 변동성	|	시즌/딜/이벤트 스파이크	|	4	|	세일·광고 시 피크 발생 가능	|
-|	글로벌/지연 요구	|	지역 분산/다국어·로케일	|	4	|	동유럽 타깃 + 한국 운영	|
-|	가용성/SLA	|	99.9%+ 등 목표	|	3	|	초기엔 99.5~99.9% 현실적	|
-|	이벤트 지향 적합성	|	주문/결제/알림의 비동기화	|	4	|	주문→결제→재고 전형적 이벤트 플로우	|
-|	데이터 제약 낮음	|	레거시 의존↓/현대 DB	|	4	|	Supabase(Postgres), 스키마 변경 탄력	|
-|	DevOps/SRE 숙련	|	자동화·온콜 역량	|	2	|	(가정) 소규모 팀, 아직 성장 중	|
-|	CI/CD 성숙	|	테스트/배포 자동화	|	2	|	Edge Functions/DB 마이그 마이그레이션 자동화 필요	|
-|	관측성 성숙	|	로그·메트릭·트레이스	|	2	|	기본 로그 외 분산추적 미구축 가정	|
-|	컴플라이언스 민감도	|	결제/개인정보 처리	|	3	|	결제 연동·PII 보관 최소화 지향	|
+
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>의미(고득점일수록 도입가치↑)</th>
+<th>베이스라인 점수</th>
+<th>근거/메모</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>기능 출시 속도</td>
+<td>배포 빈도·실험 필요성</td>
+<td>4</td>
+<td>쇼핑앱은 프로모션/번역/카탈로그 변경이 잦음</td>
+</tr>
+<tr>
+<td>트래픽 변동성</td>
+<td>시즌/딜/이벤트 스파이크</td>
+<td>4</td>
+<td>세일·광고 시 피크 발생 가능</td>
+</tr>
+<tr>
+<td>글로벌/지연 요구</td>
+<td>지역 분산/다국어·로케일</td>
+<td>4</td>
+<td>동유럽 타깃 + 한국 운영</td>
+</tr>
+<tr>
+<td>가용성/SLA</td>
+<td>99.9%+ 등 목표</td>
+<td>3</td>
+<td>초기엔 99.5~99.9% 현실적</td>
+</tr>
+<tr>
+<td>이벤트 지향 적합성</td>
+<td>주문/결제/알림의 비동기화</td>
+<td>4</td>
+<td>주문→결제→재고 전형적 이벤트 플로우</td>
+</tr>
+<tr>
+<td>데이터 제약 낮음</td>
+<td>레거시 의존↓/현대 DB</td>
+<td>4</td>
+<td>Supabase(Postgres), 스키마 변경 탄력</td>
+</tr>
+<tr>
+<td>DevOps/SRE 숙련</td>
+<td>자동화·온콜 역량</td>
+<td>2</td>
+<td>(가정) 소규모 팀, 아직 성장 중</td>
+</tr>
+<tr>
+<td>CI/CD 성숙</td>
+<td>테스트/배포 자동화</td>
+<td>2</td>
+<td>Edge Functions/DB 마이그 마이그레이션 자동화 필요</td>
+</tr>
+<tr>
+<td>관측성 성숙</td>
+<td>로그·메트릭·트레이스</td>
+<td>2</td>
+<td>기본 로그 외 분산추적 미구축 가정</td>
+</tr>
+<tr>
+<td>컴플라이언스 민감도</td>
+<td>결제/개인정보 처리</td>
+<td>3</td>
+<td>결제 연동·PII 보관 최소화 지향</td>
+</tr>
+</tbody>
+</table>
 
 
     총점 = 4+4+4+3+4+4+2+2+2+3 = 32 / 50 (64%) → “적합(중상)”
@@ -475,21 +538,21 @@ spec: { minAvailable: 1, selector: { matchLabels: { app: products } } }
 
 * 작게·자주: 위험을 쪼개고 Canary/Feature-Flag로 배포
 
-* Stateless 우선: 세션·흐름은 토큰/스토리지, 트랜잭션은 **RPC(원자)**로
+* __Stateless 우선__: 세션·흐름은 토큰/스토리지, 트랜잭션은 **RPC(원자)**로
 
-* 비동기: Outbox/이벤트로 decouple, 결제·재고는 SAGA 보상
+* __비동기__: Outbox/이벤트로 decouple, 결제·재고는 SAGA 보상
 
-* 관측성/보안 내재화: 처음부터 OTel/로그/알람 + 시크릿 관리
+* __관측성/보안 내재화__: 처음부터 OTel/로그/알람 + 시크릿 관리
 
 ### W1–W2: 경계·SLO·관측성 “뼈대” 세우기
 
 * 마일스톤
 
-    * 서비스 경계 초안: catalog / cart / order / payment
+    * __서비스 경계 초안__: catalog / cart / order / payment
 
-    * SLO 정의: 가용성(예: 99.9%), p95 지연(예: 300ms), 오류율
+    * __SLO 정의__: 가용성(예: 99.9%), p95 지연(예: 300ms), 오류율
 
-    * 관측성 베이스라인: Edge Functions/클라이언트에 에러 추적(Sentry 등), API Latency/Rate/Error 대시보드
+    * __관측성 베이스라인__: Edge Functions/클라이언트에 에러 추적(Sentry 등), API Latency/Rate/Error 대시보드
 
     * Supabase DB 마이그레이션 관리(CLI) 시작: 모든 스키마 변경 PR 기반
 
@@ -501,7 +564,7 @@ spec: { minAvailable: 1, selector: { matchLabels: { app: products } } }
 
 * 비용 관점
 
-    * 관측성/로그: 시작은 프리 · 소규모 요금제(월 수십달러 수준)
+    * __관측성/로그__: 시작은 프리 · 소규모 요금제(월 수십달러 수준)
 
 ### W3–W4: CI/CD·릴리스 전략
 
