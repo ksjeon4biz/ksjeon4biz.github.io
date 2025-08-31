@@ -36,42 +36,14 @@ categories: SAGA
 * 재고 예약까지 됐는데 배송 라벨 생성 실패 → 재고 예약 해제 → 결제 승인 취소 → 주문 취소
 
 ### “Forward ↔ 보상” 매핑표
-<table>
-<thead>
-<tr>
-<th>Forward(정상 단계)</th>
-<th>Compensation(보상 단계)</th>
-<th>비고</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>주문 PENDING 생성</td>
-<td>주문 CANCELLED</td>
-<td>최후 보상</td>
-</tr>
-<tr>
-<td>결제 Authorize</td>
-<td>Void(승인 취소)</td>
-<td>Capture 전</td>
-</tr>
-<tr>
-<td>결제 Capture</td>
-<td>Refund</td>
-<td>이미 돈이 움직였으면 환불</td>
-</tr>
-<tr>
-<td>재고 Reserve</td>
-<td>Release(예약 해제)</td>
-<td>수량 되돌림</td>
-</tr>
-<tr>
-<td>배송 라벨 생성</td>
-<td>라벨 Cancel</td>
-<td>운송장 무효화</td>
-</tr>
-</tbody>
-</table>
+
+|	Forward(정상 단계)	|	Compensation(보상 단계)	|	비고	|
+|	---	|	---	|	---	|
+|	주문 PENDING 생성	|	주문 CANCELLED	|	최후 보상	|
+|	결제 Authorize	|	Void(승인 취소)	|	Capture 전	|
+|	결제 Capture	|	Refund	|	이미 돈이 움직였으면 환불	|
+|	재고 Reserve	|	Release(예약 해제)	|	수량 되돌림	|
+|	배송 라벨 생성	|	라벨 Cancel	|	운송장 무효화	|
 
 
 * 포인트: 가능하면 2단계 결제(Authorize→Capture)로 설계하면 보상이 쉬워집니다.
