@@ -25,25 +25,25 @@ MSA에서 분산 캐시는 “느린 것(DB/외부 API/복잡 계산)” 앞에 
 
     * 쓰기: DB 업데이트 후 해당 키 무효화/갱신
 
-### 1. Read-through
+### 2. Read-through
 
     * 캐시가 miss 시 원천을 직접 읽어 채움(라이브러리/프락시가 지원)
 
-### 1. Write-through / Write-behind
+### 3. Write-through / Write-behind
 
     * Write-through: 캐시에 쓰면 동시에 DB 반영
 
     * Write-behind: 캐시에 먼저 쓰고 비동기로 DB 반영(지연 허용될 때만)
 
-### 1. Refresh-ahead
+### 4. Refresh-ahead
 
     * 만료 임박(soft TTL) 시 백그라운드 리프레시, 사용자는 항상 빠른 응답
 
-### 1. Near Cache
+### 5. Near Cache
 
     * 인스턴스 로컬 메모리에 아주 짧게 보관, 불일치 위험은 Pub/Sub로 완화
 
-### 1. Negative Caching
+### 6. Negative Caching
 
     * “없음(404/빈 결과)”도 잠깐 캐시해서 DB 폭주 방지
 
