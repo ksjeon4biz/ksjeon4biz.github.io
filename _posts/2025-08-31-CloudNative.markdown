@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Cloud Native"
-date:   2025-08-31 17:57:00 +0900
+date:   2025-08-31 20:00:00 +0900
 categories: Cloud
 ---
 
