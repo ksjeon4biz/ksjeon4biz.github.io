@@ -19,12 +19,37 @@ categories: test
 5회 연속 실패 시 → 계정 잠김
 
 # (2) 테스트 케이스
-|TC ID|입력 조건|예상 결과|
-|---|---|---|
-|TC01|valid ID + valid PW|로그인 성공 → 메인 이동|
-|TC02|invalid ID + any PW|"계정 없음" 오류|
-|TC03|valid ID + invalid PW|"비밀번호 오류"|
-|TC04|valid ID + invalid PW, 5회 반복|계정 잠김|
+<table>
+<thead>
+<tr>
+<th>TC ID</th>
+<th>입력 조건</th>
+<th>예상 결과</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TC01</td>
+<td>valid ID + valid PW</td>
+<td>로그인 성공 → 메인 이동</td>
+</tr>
+<tr>
+<td>TC02</td>
+<td>invalid ID + any PW</td>
+<td>"계정 없음" 오류</td>
+</tr>
+<tr>
+<td>TC03</td>
+<td>valid ID + invalid PW</td>
+<td>"비밀번호 오류"</td>
+</tr>
+<tr>
+<td>TC04</td>
+<td>valid ID + invalid PW, 5회 반복</td>
+<td>계정 잠김</td>
+</tr>
+</tbody>
+</table>
 
 
 # (3) 커버리지
