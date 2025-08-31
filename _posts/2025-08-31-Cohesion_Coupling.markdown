@@ -100,32 +100,32 @@ class ProcessOrder:
 좋아요—“응집도↑, 결합도↓”를 실무에서 바로 점검·개선할 수 있게 체크리스트+처방전 형태로 정리해 드릴게요. (FlutterFlow + Supabase 맥락도 같이 반영)
 
 ## 1. 아키텍처 경계 & 의존 방향
-### 체크
-* 도메인(use-case) → “추상(포트)”에 의존, 인프라(DB/API/UI) → “구현(어댑터)”에 의존하나요? (DIP)
-* 패키지 사이 순환 의존이 없나요?
-* 안정적인 모듈(많이 참조됨)이 불안정한 모듈에 의존하지 않나요? (Stable Dependencies Principle)
+    ### 체크
+    * 도메인(use-case) → “추상(포트)”에 의존, 인프라(DB/API/UI) → “구현(어댑터)”에 의존하나요? (DIP)
+    * 패키지 사이 순환 의존이 없나요?
+    * 안정적인 모듈(많이 참조됨)이 불안정한 모듈에 의존하지 않나요? (Stable Dependencies Principle)
 
-### 신호
-도메인 서비스가 supabase, http, flutterflow action 등을 직접 호출
-import 그래프에 사이클 존재
+    ### 신호
+    도메인 서비스가 supabase, http, flutterflow action 등을 직접 호출
+    import 그래프에 사이클 존재
 
-### 처방
-“포트-어댑터”로 갈라서, 도메인은 다음과 같은 인터페이스만 봅니다:
+    ### 처방
+    “포트-어댑터”로 갈라서, 도메인은 다음과 같은 인터페이스만 봅니다:
 
-```python
-class CartRepo: 
-    def find(self, user_id): ...
-    def save(self, cart): ...
-class PaymentPort:
-    def pay(self, amount): ...
-```
+    ```python
+    class CartRepo: 
+        def find(self, user_id): ...
+        def save(self, cart): ...
+    class PaymentPort:
+        def pay(self, amount): ...
+    ```
 
-Supabase 호출/FlutterFlow 액션은 어댑터에서 구현:
-```python
-class SupabaseCartRepo(CartRepo):
-    def find(self, user_id):  # RPC 호출 or select
-    def save(self, cart):     # RPC로 원자 처리
-```
+    Supabase 호출/FlutterFlow 액션은 어댑터에서 구현:
+    ```python
+    class SupabaseCartRepo(CartRepo):
+        def find(self, user_id):  # RPC 호출 or select
+        def save(self, cart):     # RPC로 원자 처리
+    ```
 
 ## 2. 모듈 응집도 (Cohesion)
 ### 체크
@@ -143,7 +143,6 @@ OrderService가 결제/영수증/메일/SMS까지 다 처리
 큰 함수는 Extract Function → 이름이 기능을 말하도록
 
 ## 3. 결합도 (Coupling)
-
 ### 체크
  외부 시스템/라이브러리에 직접 깊게 의존하지 않나요?
  거대한 DTO(필드 20+)를 여기저기 전달하나요?
@@ -159,7 +158,6 @@ OrderService가 결제/영수증/메일/SMS까지 다 처리
 싱글톤/전역 대신 주입(의존성 주입)
 
 ## 4. 데이터/백엔드 (Supabase 중심)
-
 ### 체크
  테이블 직접 노출 대신 의미 있는 RPC(원자 동작)로 캡슐화했나요?
  RLS 정책이 유스케이스/역할과 정렬되어 있나요?
@@ -239,13 +237,13 @@ Afferent(들어오는 의존)↑ 모듈은 안정적으로, Efferent(나가는 �
  커버리지 공백이 분기 기준으로 남지 않았는가?
 
 ## 9. 개선 순서(리팩터링 로드맵)
-핫스팟 탐지: 자주 고치는 파일/버그 많은 영역(로그/PR 기록)
-시임(Seam) 만들기: 포트 인터페이스 도입 → 외부 의존 격리
-유스케이스 단위 테스트 작성 → 빠른 피드백 루프 확보
-어댑터 분리: Supabase, 결제, 외부 API 구현을 모듈로 격리
-플래그/거대 DTO 제거 → 전략/작은 값객체
-RLS/RPC 강화 → 클라이언트 로직 단순화
-중복 제거 & 네이밍 정리 → 응집 강화
+1) 핫스팟 탐지: 자주 고치는 파일/버그 많은 영역(로그/PR 기록)
+1) 시임(Seam) 만들기: 포트 인터페이스 도입 → 외부 의존 격리
+1) 유스케이스 단위 테스트 작성 → 빠른 피드백 루프 확보
+1) 어댑터 분리: Supabase, 결제, 외부 API 구현을 모듈로 격리
+1) 플래그/거대 DTO 제거 → 전략/작은 값객체
+1) RLS/RPC 강화 → 클라이언트 로직 단순화
+1) 중복 제거 & 네이밍 정리 → 응집 강화
 
 ## 10. 짧은 예시 (FlutterFlow 호출 경계)
 FlutterFlow 위젯 → CartService.add(pid)만 호출
