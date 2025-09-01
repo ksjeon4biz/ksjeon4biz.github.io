@@ -683,18 +683,18 @@ export async function runAgent(question: string, init: Partial<Ctx> = {}) {
 
 ```sql
 ┌─────────┐                     ┌────────────────────────────────────────┐
-│  User   │── 의도/질문 ───────▶│                 Agent                  │
+│  User   │── 의도/질문 ───────▶ │                 Agent                  │
 └─────────┘                     │ Plan → Tool-Use → Observe → Revise     │
                                 │  ├─ Planner / Tool Router              │
-                                │  ├─ Critic(자체 검증) / Context Guard  │
+                                │  ├─ Critic(자체 검증) / Context Guard   │
                                 └──┬───────────────────────┬─────────────┘
                                    │                       │     |
                                    │ RAG 호출              │ LLM │
                                    ▼                       ▼     ▼
                         ┌─────────────────────┐      ┌────────────┐
                         │   RAG Subsystem     │      │    LLM     │
-                        │  Retriever → Ranker │◀─────┤ (생성기)   │
-                        │  → Context Packing  │  컨텍스트         │
+                        │  Retriever → Ranker │◀─────┤ (생성기)    │
+                        │  → Context Packing  │  컨텍스트          │
                         └───────┬─────────────┘      └─────▲──────┘
                                 │                          │ 초안
                                 ▼                          │
@@ -702,7 +702,7 @@ export async function runAgent(question: string, init: Partial<Ctx> = {}) {
                      │  Vector DB        │◀─ 임베딩/수집 ──┤
                      └────────┬──────────┘                 │
                               ▼                            │
-                       Docs / FAQ / 정책                   │
+                       Docs / FAQ / 정책                    │
                                                            │
 Agent ──────────────▶  외부 도구: SQL/DB · Web · 업무 API(결제/재고)
    (선택적으로 호출)   (읽기/행동 실행, 승인·가드레일 적용)
