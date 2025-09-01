@@ -694,7 +694,7 @@ export async function runAgent(question: string, init: Partial<Ctx> = {}) {
                         ┌─────────────────────┐      ┌────────────┐
                         │   RAG Subsystem     │      │    LLM     │
                         │  Retriever → Ranker │◀─────┤ (생성기)    │
-                        │  → Context Packing  │  컨텍스트          │
+                        │  → Context Packing  │   컨텍스트          │
                         └───────┬─────────────┘      └─────▲──────┘
                                 │                          │ 초안
                                 ▼                          │
