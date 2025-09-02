@@ -193,3 +193,38 @@ class DecoratorDemo {
 
 * 기능을 선택적으로 추가/제거하고 싶으면 Decorator
   (로깅·캐시·권한·세금/쿠폰/배송비 등)
+
+
+---
+
+
+2-1. Composite 패턴 예시(도형 객체를 그룹화하여 동시에 그리기)java // Componentinterface Graphic {    void draw();}// Leaf - 원class Circle implements Graphic {    @Override    public void draw() {        System.out.println("원을 그립니다.");    }}// Leaf - 사각형class Rectangle implements Graphic {    @Override    public void draw() {        System.out.println("사각형을 그립니다.");    }}// Composite — 여러 Graphic을 모아놓은 그룹class CompositeGraphic implements Graphic {    private java.util.List<Graphic> children = new java.util.ArrayList<>();    public void add(Graphic graphic) {        children.add(graphic);    }    public void remove(Graphic graphic) {        children.remove(graphic);    }    @Override    public void draw() {        for (Graphic g : children) {            g.draw();        }    }}// 메인public class CompositePatternExample {    public static void main(String[] args) {        Circle circle = new Circle();        Rectangle rectangle = new Rectangle();        CompositeGraphic group = new CompositeGraphic();        group.add(circle);        group.add(rectangle);        group.draw(); // -> 원, 사각형 둘 다 출력    }}🔹 특징: 단일 객체(Leaf)와 그룹(Composite)을 동일하게 draw()로 다룰 수 있음.2-2. Decorator 패턴 예시(출력 메시지에 동적으로 기능 추가)java // Componentinterface Printer {    void print();}// Concrete Componentclass SimplePrinter implements Printer {    @Override    public void print() {        System.out.print("Hello");    }}// Decoratorabstract class PrinterDecorator implements Printer {    protected Printer printer;    public PrinterDecorator(Printer printer) {        this.printer = printer;    }    @Override    public void print() {        printer.print(); // 기본 기능 위임    }}// Concrete Decorator — 감싸서 기능 확장class ExclamationDecorator extends PrinterDecorator {    public ExclamationDecorator(Printer printer) {        super(printer);    }    @Override    public void print() {        super.print();        System.out.print("!");    }}class BracketDecorator extends PrinterDecorator {    public BracketDecorator(Printer printer) {        super(printer);    }    @Override    public void print() {        System.out.print("[");        super.print();        System.out.print("]");    }}// 메인public class DecoratorPatternExample {    public static void main(String[] args) {        Printer printer = new SimplePrinter();        Printer decorated =            new BracketDecorator(                new ExclamationDecorator(printer)            );        decorated.print(); // 출력: [Hello!]    }}
+
+
+2-1. Composite 패턴 예시(도형 객체를 그룹화하여 동시에 그리기)java // Componentinterface Graphic {    void draw();}// Leaf - 원class Circle implements Graphic {    @Override    public void draw() {        System.out.println("원을 그립니다.")
+   }}// Leaf - 사각형class Rectangle implements Graphic {    @Override    public void draw() {        System.out.println("사각형을 그립니다.")
+   }}// Composite — 여러 Graphic을 모아놓은 그룹class CompositeGraphic implements Graphic {    private java.util.List<Graphic> children = new java.util.ArrayList<>()
+   public void add(Graphic graphic) {        children.add(graphic)
+   }    public void remove(Graphic graphic) {        children.remove(graphic)
+   }    @Override    public void draw() {        for (Graphic g : children) {            g.draw()
+       }    }}// 메인public class CompositePatternExample {    public static void main(String[] args) {        Circle circle = new Circle()
+       Rectangle rectangle = new Rectangle()
+       CompositeGraphic group = new CompositeGraphic()
+       group.add(circle)
+       group.add(rectangle)
+       group.draw()
+// -> 원, 사각형 둘 다 출력    }}🔹 특징: 단일 객체(Leaf)와 그룹(Composite)을 동일하게 draw()로 다룰 수 있음.2-2. Decorator 패턴 예시(출력 메시지에 동적으로 기능 추가)java // Componentinterface Printer {    void print();}// Concrete Componentclass SimplePrinter implements Printer {    @Override    public void print() {        System.out.print("Hello")
+   }}// Decoratorabstract class PrinterDecorator implements Printer {    protected Printer printer
+   public PrinterDecorator(Printer printer) {        this.printer = printer
+   }    @Override    public void print() {        printer.print()
+// 기본 기능 위임    }}// Concrete Decorator — 감싸서 기능 확장class ExclamationDecorator extends PrinterDecorator {    public ExclamationDecorator(Printer printer) {        super(printer)
+   }    @Override    public void print() {        super.print()
+       System.out.print("!")
+   }}class BracketDecorator extends PrinterDecorator {    public BracketDecorator(Printer printer) {        super(printer)
+   }    @Override    public void print() {        System.out.print("[")
+       super.print()
+       System.out.print("]")
+   }}// 메인public class DecoratorPatternExample {    public static void main(String[] args) {        Printer printer = new SimplePrinter()
+       Printer decorated =            new BracketDecorator(                new ExclamationDecorator(printer)            )
+       decorated.print()
+// 출력: [Hello!]    }}
